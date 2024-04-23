@@ -1,7 +1,9 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <unordered_map>
 #include <limits>
+#include <sstream>
 
 using namespace std;
 
@@ -40,17 +42,37 @@ unordered_map<int, int> computeMinimumCost(int n, vector<vector<int>>& C) {
 }
 
 int main() {
-    // Sample cost matrix
-    vector<vector<int>> C = {
-        {0, 10, 50, 5, 12, 27},
-        {INF, 0, 23, 16, 38, 44},
-        {INF, INF, 0, 30, 15, 33},
-        {INF, INF, INF, 0, 33, 43},
-        {INF, INF, INF, INF, 0, 12},
-        {INF, INF, INF, INF, INF, 0}
-    };
+    // Open the file for reading
+    ifstream inputFile("input.txt");
+    if (!inputFile) {
+        cerr << "Error: Unable to open input file." << endl;
+        return 1;
+    }
 
-    int n = C.size();
+    // Read the size of the input matrix from the first line
+    int n;
+    inputFile >> n;
+
+    // Read the cost matrix from the file
+    vector<vector<int>> C;
+    string line;
+    getline(inputFile, line); // Consume the rest of the first line
+    while (getline(inputFile, line)) {
+        istringstream iss(line);
+        vector<int> row;
+        int cost;
+        while (iss >> cost) {
+            row.push_back(cost);
+        }
+        // Add zeroes to the front of the row if necessary
+        while (row.size() < n) {
+            row.insert(row.begin(), 0);
+        }
+        C.push_back(row);
+    }
+
+    // Close the input file
+    inputFile.close();
 
     // Compute minimum cost of traveling from post 0 to each subsequent post
     unordered_map<int, int> minCost = computeMinimumCost(n, C);

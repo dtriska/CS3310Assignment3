@@ -55,7 +55,14 @@ public class Canoe {
     
 
     public static void main(String[] args) {
-        try (BufferedReader inputFile = new BufferedReader(new FileReader("input.txt"))) {
+        if (args.length != 1) {
+            System.err.println("Usage: java Canoe <input_file>");
+            System.exit(1);
+        }
+
+        String fileName = args[0];
+        
+        try (BufferedReader inputFile = new BufferedReader(new FileReader(fileName))) {
             // Read the size of the input matrix from the first line
             int n = Integer.parseInt(inputFile.readLine().trim());
 

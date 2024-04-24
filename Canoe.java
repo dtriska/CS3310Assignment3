@@ -1,5 +1,3 @@
-// Derek Triska CS3310 Program 3
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -35,23 +33,39 @@ public class Canoe {
             // Save the minimum cost to reach the current post in the map
             minCost.put(post, minCostToPost);
         }
-
+        
         return minCost;
     }
+
+    // Function to print the sequence of rentals for the route between posts 0 and n - 1
+    static void printRentalSequence(Map<Integer, Integer> minCost, int n, int[][] C) {
+        System.out.println("Sequence of Rentals:");
+        int post = n - 1;
+        while (post > 0) {
+            for (int prevPost = 0; prevPost < post; ++prevPost) {
+                int cost = minCost.get(post) - minCost.get(prevPost);
+                if (C[prevPost][post] == cost) {
+                    System.out.println("Rent canoe from post " + prevPost + " to post " + post + " (Cost: " + cost + ")");
+                    post = prevPost;
+                    break;
+                }
+            }
+        }
+    }
+    
 
     public static void main(String[] args) {
         try (BufferedReader inputFile = new BufferedReader(new FileReader("input.txt"))) {
             // Read the size of the input matrix from the first line
             int n = Integer.parseInt(inputFile.readLine().trim());
 
-
             // Read the cost matrix from the file
             int[][] C = new int[n][n];
             for (int i = 0; i < n; i++) {
                 String line = inputFile.readLine();
-                    if (line == null) {
-                        break; // End of file reached
-                    }
+                if (line == null) {
+                    break; // End of file reached
+                }
                 String[] parts = line.trim().split("\\s+");
                 // Initialize row with zeroes
                 int[] row = new int[n];
@@ -73,6 +87,9 @@ public class Canoe {
             for (int post = 1; post < n; ++post) {
                 System.out.println("Minimum cost from post 0 to post " + post + ": " + minCost.get(post));
             }
+
+            // Print the sequence of rentals for the route between posts 0 and n - 1
+            printRentalSequence(minCost, n, C);
         } catch (IOException e) {
             System.err.println("Error: Unable to open input file.");
             e.printStackTrace();

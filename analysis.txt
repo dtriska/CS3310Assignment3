@@ -1,3 +1,5 @@
+Derek Triska CS3310 Program 3
+
 Description of the Formula
 The program uses dynamic programming to calculate the minimum cost of traveling from post 0 to each subsequent post along the canoe trip route. The recursive formula used to compute the optimal costs between posts is as follows:
 

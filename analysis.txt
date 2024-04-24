@@ -1,0 +1,19 @@
+Description of the Formula
+The program uses dynamic programming to calculate the minimum cost of traveling from post 0 to each subsequent post along the canoe trip route. The recursive formula used to compute the optimal costs between posts is as follows:
+
+minCost[i] represents the minimum cost of traveling from post 0 to post i.
+
+For each post i (starting from 1 to n-1):
+
+Initialize minCost[i] to infinity (INF).
+Iterate over all previous posts prevPost (from 0 to i-1):
+Calculate the cost of renting a canoe from prevPost to i.
+If the cost is not infinity, update minCost[i] to the minimum of its current value and the sum of minCost[prevPost] and the cost of renting a canoe from prevPost to i.
+After computing minCost[i] for all posts i, the resulting minCost map contains the minimum cost of traveling from post 0 to each subsequent post.
+
+Theoretical Analysis of Runtime
+n is the number of posts along the river.
+
+Initialization: Initializing the minCost matrix with n elements has a time complexity of O(n).
+Main Loop: The main loop iterates over each post from 1 to n-1. For each post, it iterates over all previous posts, which is a linear operation. Therefore, the time complexity of the main loop is O(n^2).
+Overall Analysis: Combining the initialization and the main loop, the overall time complexity of the program is O(n^2).

@@ -8,28 +8,30 @@ public class Canoe {
 
     static final int INF = Integer.MAX_VALUE;
 
-    // Function to compute the minimum cost of traveling from post 0 to each subsequent post
-    static Map<Integer, Integer> computeMinimumCost(int n, int[][] C) {
+    // Function to compute the minimum cost of traveling from post startingPostIndex to each subsequent post
+    static Map<Integer, Integer> computeMinimumCost(int n, int[][] C, int startingPostIndex) {
         Map<Integer, Integer> minCost = new HashMap<>(); // Map to store minimum costs
 
-        // Base case: Minimum cost from post 0 to post 0 is 0
-        minCost.put(0, 0);
+        // Base case: Minimum cost from starting post to itself is 0
+        minCost.put(startingPostIndex, 0);
 
-        // Loop through each post from 1 to n-1
-        for (int post = 1; post < n; ++post) {
+        // Loop through each post from startingPostIndex + 1 to n-1
+        for (int post = startingPostIndex + 1; post < n; ++post) {
             int minCostToPost = INF; // Initialize minimum cost to post as infinity
 
-            // Loop through each previous post from 0 to post-1
-            for (int prevPost = 0; prevPost < post; ++prevPost) {
+            // Loop through each previous post from startingPostIndex to post-1
+            for (int prevPost = startingPostIndex; prevPost < post; ++prevPost) {
                 // Calculate the cost of renting a canoe from prevPost to post
                 int cost = C[prevPost][post];
 
-                // Calculate the minimum cost from post 0 to prevPost and add the cost to reach post from prevPost
+                // Calculate the minimum cost from starting post to prevPost and add the cost to reach post from prevPost
                 int totalCost = minCost.get(prevPost) + cost;
 
                 // Update the minimum cost to post by comparing it with the previous cheapest path
                 minCostToPost = Math.min(minCostToPost, totalCost);
+                
             }
+
             // Save the minimum cost to reach the current post in the map
             minCost.put(post, minCostToPost);
         }
@@ -37,12 +39,12 @@ public class Canoe {
         return minCost;
     }
 
-    // Function to print the sequence of rentals for the route between posts 0 and n - 1
-    static void printRentalSequence(Map<Integer, Integer> minCost, int n, int[][] C) {
-        System.out.println("Sequence of Rentals:");
+    // Function to print the sequence of rentals for the route between posts startingPostIndex and n - 1
+    static void printRentalSequence(Map<Integer, Integer> minCost, int startingPostIndex, int n, int[][] C) {
+        System.out.println("Sequence of Rentals from post " + startingPostIndex + ":");
         int post = n - 1;
-        while (post > 0) {
-            for (int prevPost = 0; prevPost < post; ++prevPost) {
+        while (post > startingPostIndex) {
+            for (int prevPost = startingPostIndex; prevPost < post; ++prevPost) {
                 int cost = minCost.get(post) - minCost.get(prevPost);
                 if (C[prevPost][post] == cost) {
                     System.out.println("Rent canoe from post " + prevPost + " to post " + post + " (Cost: " + cost + ")");
@@ -87,16 +89,19 @@ public class Canoe {
                 C[i] = row;
             }
 
-            // Compute minimum cost of traveling from post 0 to each subsequent post
-            Map<Integer, Integer> minCost = computeMinimumCost(n, C);
+            // Iterate over all starting points from 0 to n-1
+            for (int startingPostIndex = 0; startingPostIndex < n; startingPostIndex++) {
+                // Compute minimum cost of traveling from post startingPostIndex to each subsequent post
+                Map<Integer, Integer> minCost = computeMinimumCost(n, C, startingPostIndex);
 
-            // Print the minimum cost of traveling from post 0 to each subsequent post
-            for (int post = 1; post < n; ++post) {
-                System.out.println("Minimum cost from post 0 to post " + post + ": " + minCost.get(post));
+                // Print the minimum cost of traveling from post startingPostIndex to each subsequent post
+                for (int post = startingPostIndex + 1; post < n; ++post) {
+                    System.out.println("Minimum cost from post " + startingPostIndex + " to post " + post + ": " + minCost.get(post));
+                }
+
+                // Print the sequence of rentals for the route between posts startingPostIndex and n - 1
+                printRentalSequence(minCost, startingPostIndex, n, C);
             }
-
-            // Print the sequence of rentals for the route between posts 0 and n - 1
-            printRentalSequence(minCost, n, C);
         } catch (IOException e) {
             System.err.println("Error: Unable to open input file.");
             e.printStackTrace();

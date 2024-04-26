@@ -1,3 +1,10 @@
+/**************************************************************/
+/* Derek Triska */
+/* CS 3310, Spring 2024 */
+/* Programming Assignment 3 */
+/**************************************************************/
+
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,7 +15,15 @@ public class Canoe {
 
     static final int INF = Integer.MAX_VALUE;
 
-    // Function to compute the minimum cost of traveling from post startingPostIndex to each subsequent post
+    /**************************************************************/
+    /* Method: computeMinimumCost */
+    /* Purpose: Compute the minimum cost of traveling from a given starting post */
+    /* Parameters: */
+    /* int n: number of posts */
+    /* int[][] C: cost matrix */
+    /* int startingPostIndex: index of the starting post */
+    /* Returns: Map<Integer, Integer>: minimum cost to reach each subsequent post */
+    /**************************************************************/
     static Map<Integer, Integer> computeMinimumCost(int n, int[][] C, int startingPostIndex) {
         Map<Integer, Integer> minCost = new HashMap<>(); // Map to store minimum costs
 
@@ -39,7 +54,16 @@ public class Canoe {
         return minCost;
     }
 
-    // Function to print the sequence of rentals for the route between posts startingPostIndex and n - 1
+    /**************************************************************/
+    /* Method: printRentalSequence */
+    /* Purpose: Print the sequence of rentals for the route between two posts */
+    /* Parameters: */
+    /* Map<Integer, Integer> minCost: minimum cost to reach each subsequent post */
+    /* int startingPostIndex: index of the starting post */
+    /* int n: number of posts */
+    /* int[][] C: cost matrix */
+    /* Returns: void */
+    /**************************************************************/
     static void printRentalSequence(Map<Integer, Integer> minCost, int startingPostIndex, int n, int[][] C) {
         System.out.println("Sequence of Rentals from post " + startingPostIndex + ":");
         int post = n - 1;
